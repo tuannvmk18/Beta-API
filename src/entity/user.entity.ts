@@ -5,7 +5,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { OAuth } from './auth.entity';
+import { OAuth } from './oauth.entity';
 
 @Entity('user')
 export class User {
@@ -28,7 +28,7 @@ export class User {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @OneToOne((_type) => OAuth)
-  @JoinColumn()
+  @JoinColumn({ name: 'oauth_id' })
   oauth!: OAuth;
 
   @Column('timestamp', {

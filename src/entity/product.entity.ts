@@ -1,4 +1,13 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { OrderLine } from './order_line.entity';
 
 @Entity('product')
 export class Product {
@@ -8,26 +17,39 @@ export class Product {
   @Column('varchar', { nullable: false, length: 255, name: 'name' })
   name!: string;
 
-  @Column('text', { nullable: false, name: 'description' })
+  @Column('text', { nullable: true, name: 'description' })
   description: string;
 
-  @Column('int', { nullable: true, unsigned: true, name: 'price' })
+  // eslint-disable-next-line prettier/prettier
+  @Column('float', {
+    nullable: true,
+    unsigned: true,
+    default: 0,
+    name: 'price',
+  })
   price: number;
 
   @Column('varchar', { nullable: true, length: 255, name: 'image_path' })
   img_path: string;
 
-  @Column('timestamp', {
+  @CreateDateColumn({
+    name: 'create_at',
     nullable: false,
-    default: () => 'CURRENT_TIMESTAMP',
-    name: 'updated_at',
-  })
-  updated_at: Date;
-
-  @Column('timestamp', {
-    nullable: false,
-    default: () => 'CURRENT_TIMESTAMP',
-    name: 'created_at',
   })
   created_at: Date;
+
+  @UpdateDateColumn({
+    name: 'update_at',
+    nullable: false,
+  })
+  update_at: Date;
+
+  @DeleteDateColumn({
+    name: 'delete_at',
+    nullable: true,
+  })
+  delete_at: Date;
+
+  @OneToMany(() => OrderLine, (order_line) => order_line.product_id)
+  order_line: OrderLine[];
 }

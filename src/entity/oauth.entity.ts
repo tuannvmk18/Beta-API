@@ -1,4 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Exclude } from 'class-transformer';
 
 @Entity('oauth')
 export class OAuth {
@@ -14,7 +15,12 @@ export class OAuth {
   username!: string;
 
   @Column('varchar', { nullable: true, length: 32, name: 'password' })
+  @Exclude()
   password!: string;
+
+  @Column({ nullable: true })
+  @Exclude()
+  refresh_token: string;
 
   @Column('timestamp', {
     nullable: false,

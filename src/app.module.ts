@@ -1,10 +1,10 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
-import { TypeOrmConfigService } from './config/typeorm-config.service';
+import { DatabaseModule } from './db/database.module';
+import { ProductModule } from './shared/product/product.module';
 
 @Module({
   imports: [
@@ -12,9 +12,11 @@ import { TypeOrmConfigService } from './config/typeorm-config.service';
       envFilePath: '.env',
       isGlobal: true,
     }),
-    TypeOrmModule.forRootAsync({
-      useClass: TypeOrmConfigService,
-    }),
+    // TypeOrmModule.forRootAsync({
+    //   useClass: TypeOrmConfigService,
+    // }),
+    DatabaseModule,
+    ProductModule,
   ],
   controllers: [AppController],
   providers: [AppService],
